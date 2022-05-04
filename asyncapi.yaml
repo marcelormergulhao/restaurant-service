@@ -1,0 +1,77 @@
+asyncapi: 2.2.0
+info:
+  title: Restaurant Service
+  version: 1.0.0
+servers:
+  development:
+    url: localhost:9999
+    protocol: amqp
+    description: Development Broker
+    security:
+      - user-password: []
+channels:
+  order-channel:
+    subscribe:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/OrderReceived"
+  dish-channel:
+    publish:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/DishCreated"
+          - $ref: "#/components/messages/DishPreparationAccepted"
+          - $ref: "#/components/messages/DishPreparationCompleted"
+components:
+  messages:
+    OrderReceived:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          id:
+            type: string
+          dishes:
+            type: array
+            items:
+              type: string
+    DishCreated:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          ingredients:
+            type: array
+            items:
+              type: string
+          price:
+            type: number
+    DishPreparationAccepted:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          order-id:
+            type: string
+          dish-id:
+            type: string
+          start:
+            type: string
+    DishPreparationCompleted:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          order-id:
+            type: string
+          dish-id:
+            type: string
+          end:
+            type: string
+  securitySchemes:
+    user-password:
+      type: userPassword
