@@ -26,4 +26,4 @@ def delete_dish(dish_id: str, response: Response):
         response.status_code = status.HTTP_204_NO_CONTENT
 
 if __name__ == '__main__':
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, log_level="info")
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, log_level="info")
